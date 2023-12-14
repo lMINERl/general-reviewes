@@ -2,11 +2,10 @@ import type { Component } from "solid-js";
 import { Link, useRoutes, useLocation } from "@solidjs/router";
 
 import { routes } from "../routes";
-import { useAppContext } from "../Store/appContext";
 import { CounterActions } from "../Store/CountReducer";
+import { useAppDispatch, useAppSelector } from "../Store/appContext";
 
 const App: Component = () => {
-  const { useAppDispatch, useAppSelector } = useAppContext();
   const countSelector = useAppSelector((s) => s.count.count);
   const dispatch = useAppDispatch("count");
   const location = useLocation();

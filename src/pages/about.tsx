@@ -1,11 +1,10 @@
 import { Component, createEffect, Suspense } from "solid-js";
 import { useRouteData } from "@solidjs/router";
 import type { AboutDataType } from "./about.data";
-import { useAppContext } from "../Store/appContext";
+import { useAppSelector } from "../Store/appContext";
 
 export default function About() {
   const name = useRouteData<AboutDataType>();
-  const { useAppSelector } = useAppContext();
   const getData = useAppSelector((s) => s.count.count);
 
   createEffect(() => {
