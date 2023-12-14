@@ -32,20 +32,13 @@ const reducers = combineReducers({
   count: CountReducer,
   product: CountReducer,
 });
-//
-// const reducers: reducerType = {
-//   count: function (action) {
-//     setState(["count"], (old) => {
-//       return CountReducer(old, action);
-//     });
-//   },
-// };
 
 export function useAppDispatch(key: keyof typeof reducers) {
   return function (action: Parameters<(typeof reducers)[typeof key]>[0]) {
     return reducers[key](action as any);
   };
 }
+
 export type RootState = {
   [key in keyof typeof reducers]: Parameters<
     (typeof reducers)[keyof typeof reducers]

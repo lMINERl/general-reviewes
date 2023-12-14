@@ -50,7 +50,7 @@ const App: Component = () => {
             console.log("count", countSelector());
             dispatch({
               type: CounterActions.Increment,
-              payload: { count: countSelector() },
+              payload: { count: 1 },
             });
           }}
         >
