@@ -19,7 +19,7 @@ const initalState: CountState = {
 };
 
 function reducer(
-  state: CountState = initalState,
+  state: CountState = { ...initalState },
   action: CounterActionsTypes,
 ): CountState {
   switch (action.type) {

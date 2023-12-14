@@ -5,7 +5,7 @@ import { useAppSelector } from "../Store/appContext";
 
 export default function About() {
   const name = useRouteData<AboutDataType>();
-  const getData = useAppSelector((s) => s.count.count);
+  const getData = useAppSelector((s) => s);
 
   createEffect(() => {
     console.log(name());
@@ -18,7 +18,7 @@ export default function About() {
       <p class="mt-4">A page all about this website.</p>
 
       <p>
-        {getData()}
+        {JSON.stringify(getData())}
         <span>We love</span>
         <Suspense fallback={<span>...</span>}>
           <span>&nbsp;{name()}</span>
