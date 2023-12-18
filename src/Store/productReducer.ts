@@ -32,7 +32,10 @@ function reducer(
   action: ProductActionsTypes,
 ): ProductState {
   switch (action.type) {
-    case ProductActions.AddProduct:{
+    case "@@INIT": {
+      return { ...initalState };
+    }
+    case ProductActions.AddProduct: {
       return { ...state, data: [...state.data, action.payload] };
     }
     case ProductActions.Increment:
