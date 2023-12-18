@@ -9,7 +9,6 @@ export enum CounterActions {
   Decrement,
 }
 
-
 export type CounterActionsTypes = Action<
   CounterActions.Increment,
   { count: number }
@@ -25,9 +24,12 @@ function reducer(
   action: CounterActionsTypes,
 ): CountState {
   switch (action.type) {
-    case CounterActions.Increment:
-      // state.count = action.payload.count + 1;
+    case "@@INIT": {
+      return { ...initalState };
+    }
+    case CounterActions.Increment: {
       return { count: state.count + action.payload.count };
+    }
     default:
       return state;
   }

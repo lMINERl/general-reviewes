@@ -4,14 +4,12 @@ import { Link, useRoutes, useLocation } from "@solidjs/router";
 import { routes } from "../routes";
 import { CounterActions } from "../Store/CountReducer";
 import { useAppDispatch, useAppSelector } from "../Store/appContext";
-import { ProductActions } from "../Store/productReducer";
 
 const App: Component = () => {
   const countSelector = useAppSelector((s) => s.count.count);
   const dispatch = useAppDispatch("count");
   const location = useLocation();
   const Route = useRoutes(routes);
-
   return (
     <>
       <nav class="bg-gray-200 text-gray-900 px-4">
