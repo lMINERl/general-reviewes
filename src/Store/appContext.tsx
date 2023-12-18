@@ -1,6 +1,6 @@
 import { createStore } from "solid-js/store";
-
-import CountReducer from "./CountReducer";
+import CountReducer, { CounterActions } from "./CountReducer";
+import ProductReducer, { ProductActions } from "./productReducer";
 
 interface reducerType {
   count: (action: Parameters<typeof CountReducer>[1]) => void;
@@ -8,18 +8,21 @@ interface reducerType {
 
 const [state, setState] = createStore(undefined);
 
-const combineReducers = function <
-  T extends string,
-  V extends (...args: any) => any,
->(rd: {
-  [key in T]: V;
-}): {
-  [key in T]: (action: Parameters<V>[1], _state?: Parameters<V>[0]) => void;
-} {
+// map 
+type ParametersType<T> = T extends (arg1: any, arg2: infer U) => any
+  ? U
+  : never;
+
+// map object to it's value of type function return;
+type MapObjectToReturn<T extends { [key: string]: (...args: any[]) => any }> = {
+  [K in keyof T]: T[K] extends (...args: any) => infer R ? R : never;
+};
+
+const combineReducers = function <T extends object>(rd: T): T {
   return Object.fromEntries(
     Object.entries(rd).map(([k, v]: any) => [
       k,
-      function (action: any) {
+      function (_state: any, action: any) {
         setState([k as any], (old: any) => {
           return v(old, action);
         });
@@ -30,25 +33,21 @@ const combineReducers = function <
 
 const reducers = combineReducers({
   count: CountReducer,
-  product: CountReducer,
+  product: ProductReducer,
 });
 
-export function useAppDispatch(key: keyof typeof reducers) {
-  return function (action: Parameters<(typeof reducers)[typeof key]>[0]) {
-    return reducers[key](action as any);
+export function useAppDispatch<K extends keyof typeof reducers>(key: K) {
+  return function (action: ParametersType<(typeof reducers)[K]>) {
+    return reducers[key](state?.[key], action as any);
   };
 }
 
-export type RootState = {
-  [key in keyof typeof reducers]: Parameters<
-    (typeof reducers)[keyof typeof reducers]
-  >[1];
-};
+export type RootState = MapObjectToReturn<typeof reducers>;
 
 export function useAppSelector<T>(fn: (state: RootState) => T): () => T {
   return () => fn(state);
 }
 
-Object.values(reducers).forEach((fn) => {
-  fn({ type: "@@INIT", payload: undefined } as any);
+Object.keys(reducers).forEach((k: keyof typeof reducers) => {
+  useAppDispatch(k)({ type: "@@INIT", payload: undefined } as any);
 });

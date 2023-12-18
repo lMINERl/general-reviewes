@@ -1,3 +1,5 @@
+import { Action } from "../types/types";
+
 export interface CountState {
   count: number;
 }
@@ -7,7 +9,6 @@ export enum CounterActions {
   Decrement,
 }
 
-type Action<T, P> = { type: T; payload: P };
 
 export type CounterActionsTypes = Action<
   CounterActions.Increment,
@@ -18,7 +19,7 @@ const initalState: CountState = {
   count: 0,
 };
 
-// initial state shoul auto default to a copy of object in case if you want to dublicate reducers
+// initial state should always default to a copy of object in case if you want to dublicate reducers
 function reducer(
   state: CountState = { ...initalState },
   action: CounterActionsTypes,
