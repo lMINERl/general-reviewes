@@ -1,8 +1,9 @@
 import { SetStoreFunction, createStore } from "solid-js/store";
 import CountReducer from "./CountReducer";
 import ProductReducer from "./productReducer";
+import UserSlice from "./Slice/UserSlice";
 import { MapObjectToReturn, ParametersType } from "../types/types";
-
+import { createMemo } from "solid-js";
 
 const combineReducers = function <T extends object>(rd: T): T {
   return Object.fromEntries(
@@ -20,26 +21,26 @@ const combineReducers = function <T extends object>(rd: T): T {
 const reducers = combineReducers({
   count: CountReducer,
   product: ProductReducer,
+  user: UserSlice,
 });
 
 export type RootState = MapObjectToReturn<typeof reducers>;
 
 const [state, setState] = createStore<RootState>(undefined);
 
-export function useAppDispatch<K extends keyof typeof reducers>(key: K) {
-  return function (action: ParametersType<(typeof reducers)[K]>) {
+export function useDispatch<K extends keyof typeof reducers>(key: K) {
+  return async function (action: ParametersType<(typeof reducers)[K]>) {
     return reducers[key](undefined, action as any);
   };
 }
 
-
-export function useAppSelector<T>(fn: (state: RootState) => T): () => T {
-  return () => fn(state);
+export function useSelector<T>(fn: (state: RootState) => T): Accessor<T> {
+  return createMemo(() => fn(state));
 }
 
-export { setState as setAppState };
+export { state as appState, setState as setAppState };
 
 //INIT all reducers
 Object.keys(reducers).forEach((k: keyof typeof reducers) => {
-  useAppDispatch(k)({ type: "@@INIT", payload: undefined });
+  useDispatch(k)({ type: "@@INIT", payload: undefined });
 });

@@ -1,12 +1,13 @@
 import { Action } from "../types/types";
 
 export enum ProductActions {
+  SetProdduct,
   AddProduct,
   RemoveProduct,
   Increment,
 }
 
-interface ProductData {
+export interface ProductData {
   id: string;
   name: string;
   description: string;
@@ -14,7 +15,8 @@ interface ProductData {
 
 export type ProductActionsTypes =
   | Action<ProductActions.AddProduct, ProductData>
-  | Action<ProductActions.Increment, { count: number }>;
+  | Action<ProductActions.Increment, { count: number }>
+  | Action<ProductActions.SetProdduct, ProductData[]>;
 
 export interface ProductState {
   data: ProductData[];
@@ -34,6 +36,9 @@ function reducer(
   switch (action.type) {
     case "@@INIT": {
       return { ...initalState };
+    }
+    case ProductActions.SetProdduct: {
+      return { ...state, data: action.payload };
     }
     case ProductActions.AddProduct: {
       return { ...state, data: [...state.data, action.payload] };
