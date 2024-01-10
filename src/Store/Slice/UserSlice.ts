@@ -57,8 +57,7 @@ function reducer(
       return state;
     }
     case UserActions.SelectUser: {
-      state.selected = action.payload;
-      return state;
+      return { ...state, selected: action.payload };
     }
     case UserActions.SetUsers: {
       return { ...state, data: action.payload };
@@ -68,17 +67,14 @@ function reducer(
       if (index == -1) {
         return state;
       }
-      const { [index]:_,...rest } = state.data;
+      const { [index]: _, ...rest } = state.data;
       return {
         ...state,
-        data: Object.values({ ...rest, [index]: action.payload }),
+        data: Object.values({ ...rest, [index]: action.payload }) as IUser[],
       };
-      // state.data[index] = action.payload;
-      // return state;
     }
     case UserActions.SetLoading: {
-      state.loading = action.payload;
-      return state;
+      return { ...state, loading: action.payload };
     }
     default:
       return state;

@@ -1,9 +1,14 @@
 import { SetStoreFunction, createStore } from "solid-js/store";
-import CountReducer from "./CountReducer";
-import ProductReducer from "./productReducer";
+
 import UserSlice from "./Slice/UserSlice";
+import TaskSlice from "./Slice/TaskSlice";
+
 import { MapObjectToReturn, ParametersType } from "../types/types";
-import { createMemo } from "solid-js";
+import { Accessor, createMemo } from "solid-js";
+
+export type RootState = MapObjectToReturn<typeof reducers>;
+
+const [state, setState] = createStore<RootState>(undefined);
 
 const combineReducers = function <T extends object>(rd: T): T {
   return Object.fromEntries(
@@ -19,14 +24,9 @@ const combineReducers = function <T extends object>(rd: T): T {
 };
 
 const reducers = combineReducers({
-  count: CountReducer,
-  product: ProductReducer,
+  task: TaskSlice,
   user: UserSlice,
 });
-
-export type RootState = MapObjectToReturn<typeof reducers>;
-
-const [state, setState] = createStore<RootState>(undefined);
 
 export function useDispatch<K extends keyof typeof reducers>(key: K) {
   return async function (action: ParametersType<(typeof reducers)[K]>) {

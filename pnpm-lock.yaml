@@ -28,6 +28,9 @@ devDependencies:
   tailwindcss:
     specifier: ^3.3.2
     version: 3.3.2
+  ts-essentials:
+    specifier: ^9.4.1
+    version: 9.4.1
   vite:
     specifier: ^4.3.9
     version: 4.3.9
@@ -1669,6 +1672,15 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
+    dev: true
+
+  /ts-essentials@9.4.1:
+    resolution: {integrity: sha512-oke0rI2EN9pzHsesdmrOrnqv1eQODmJpd/noJjwj2ZPC3Z4N2wbjrOEqnsEgmvlO2+4fBb0a794DCna2elEVIQ==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     dev: true
 
   /ts-interface-checker@0.1.13:

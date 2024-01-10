@@ -1,11 +1,11 @@
 import { Component, createEffect, createMemo, Suspense } from "solid-js";
 import { useRouteData } from "@solidjs/router";
 import type { AboutDataType } from "./about.data";
-import { useSelector } from "../Store/appContext";
+import { useSelector } from "../Store";
 
 export default function About() {
   const name = useRouteData<AboutDataType>();
-  const get = createMemo(useSelector((s) => s.count.count));
+  const get = createMemo(useSelector((s) => s.task.selected));
 
   createEffect(() => {
     console.log(name());
@@ -18,7 +18,7 @@ export default function About() {
       <p class="mt-4">A page all about this website.</p>
 
       <p>
-        {get()}
+        {get().selected}
         <span>We love</span>
         <Suspense fallback={<span>...</span>}>
           <span>&nbsp;{name()}</span>
