@@ -10,6 +10,7 @@ export interface UserState {
   data: IUser[];
   selected: IUser | undefined;
   loading: boolean;
+  notificationPermission: NotificationPermission;
 }
 
 export enum UserActions {
@@ -19,6 +20,7 @@ export enum UserActions {
   SetUsers,
   EditUser,
   SetLoading,
+  SetNotification,
 }
 
 export type UserActionsTypes =
@@ -27,12 +29,14 @@ export type UserActionsTypes =
   | Action<UserActions.SelectUser, IUser>
   | Action<UserActions.RemoveUser, string>
   | Action<UserActions.EditUser, IUser>
-  | Action<UserActions.SetLoading, boolean>;
+  | Action<UserActions.SetLoading, boolean>
+  | Action<UserActions.SetNotification, NotificationPermission>;
 
 const initalState: UserState = {
   data: [],
   selected: undefined,
   loading: false,
+  notificationPermission: "default",
 };
 
 // initial state should always default to a copy of object in case if you want to dublicate reducers
@@ -75,6 +79,9 @@ function reducer(
     }
     case UserActions.SetLoading: {
       return { ...state, loading: action.payload };
+    }
+    case UserActions.SetNotification: {
+      return { ...state, notificationPermission: action.payload };
     }
     default:
       return state;

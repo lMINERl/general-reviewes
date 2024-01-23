@@ -28,6 +28,10 @@ export const setUserLoading = (state: boolean) => {
   return dispatch({ type: UserActions.SetLoading, payload: state });
 };
 
+export const setUserNotification = (permission: NotificationPermission) => {
+  return dispatch({ type: UserActions.SetNotification, payload: permission });
+};
+
 export const getAllUsers = () => {
   setUserLoading(true);
 

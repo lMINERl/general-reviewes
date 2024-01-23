@@ -1,12 +1,5 @@
 import { SetStoreFunction, createStore } from "solid-js/store";
-import {
-  Accessor,
-  JSX,
-  Setter,
-  createEffect,
-  createReaction,
-  createSignal,
-} from "solid-js";
+import { JSX } from "solid-js";
 
 export interface FormPropsType<T extends object> {
   initial: T;
