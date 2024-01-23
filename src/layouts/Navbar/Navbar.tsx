@@ -8,9 +8,9 @@ interface NavbarProps {
 const Navbar = (props: NavbarProps) => {
   return (
     <nav class="flex justify-between items-center px-md0 py-xs0 bg-gray-700">
-      <div class="py-xs2 pr-md0 flex justify-start items-center">
+      <div class="w-full md:w-auto py-xs2 pr-md0 flex justify-start items-center">
         <div class="text-3xl text-white">Evently</div>
-        <div class="ml-[7.7rem] w-[24] h-[24]">
+        <div class="ml-auto md:ml-[7.7rem] w-[24px] h-[24px] flex items-center">
           <button
             class="text-gray-50"
             onClick={() => {

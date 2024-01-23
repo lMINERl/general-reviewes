@@ -60,7 +60,7 @@ const config: Config = {
         "9xl": ["8rem", { lineHeight: "1.6rem" }],
       },
       fontWeight: {
-        regular: 400,
+        regular: "400",
       },
       borderRadius: {
         custom: "0.4 rem",
@@ -70,6 +70,7 @@ const config: Config = {
         customGradient:
           "linear-gradient(270deg, rgba(56, 178, 172, 0.3) 0%, rgba(56, 178, 172, 0) 100%)",
       },
+      
       width: {
         "1/10": "10%",
       },

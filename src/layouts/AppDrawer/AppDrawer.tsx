@@ -71,15 +71,15 @@ const AppDrawer = (props: ParentProps<AppDrawerProps>) => {
   );
 
   return (
-    <div class="flex transition ease-in-out items-stretch">
+    <div class="flex items-stretch">
       <div
         class={`${
           !props.open ? "w-0" : "w-full"
-        } relative max-w-[20.8rem] bg-gray-700 overflow-hidden min-h-[100vh]`}
+        } relative md:max-w-[20.8rem] bg-gray-700 overflow-hidden min-h-[100vh] transition-all ease-linear delay-150 rounded-r-lg`}
       >
         <ul class="w-full pt-md0 px-sm0 pb-xs1">{items}</ul>
       </div>
-      <div class="w-full bg-gray-1000">{props.children}</div>
+      <div class={`${!props.open? "w-full" : "w-0"} md:w-full transition-all ease-linear delay-150 overflow-hidden bg-gray-1000`}>{props.children}</div>
     </div>
   );
 };

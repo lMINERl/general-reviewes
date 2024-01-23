@@ -48,16 +48,16 @@ const SidebarItem = (props: SidebarItemProps) => {
   }, [props.selected]);
 
   return (
-    <li class="w-full flex flex-col justify-start items-start">
+    <li class="w-full flex flex-col justify-start items-start overflow-hidden">
       <button
-        class="w-full bg-gray-800 flex justify-center items-start p-xs1"
+        class="w-full bg-gray-800 flex justify-center items-start p-xs1 rounded-lg"
         onClick={() => {
           props.onClick && props.onClick(props);
         }}
       >
         <div class="w-[24px] h-[24px]">{props.icon}</div>
         <div
-          class={`text-sm ml-xs0 ${
+          class={`overflow-hidden text-sm ml-xs0 ${
             props.selected ? "text-gray-200" : "text-gray-300"
           } ${props.disabled ? "text-gray-400" : ""} `}
         >
