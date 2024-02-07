@@ -1,68 +1,82 @@
-import {
-  Accessor,
-  Component,
-  For,
-  JSX,
-  createEffect,
-  createSignal,
-  onCleanup,
-} from "solid-js";
-interface AccordionDataType {
-  title: JSX.Element | string;
-  content: JSX.Element | string;
-  onOpen?: () => void;
+import { For, JSX, createEffect, createSignal } from "solid-js";
+
+interface AccordionProps<T> {
+  selected?: boolean;
+  disabled?: boolean;
+  name: JSX.Element;
+  data?: T;
+  onClick?: (item: AccordionProps<T>, toggle?: () => void) => void;
+  items?: AccordionProps<T>[];
 }
-interface AccordionProps {
-  data: AccordionDataType[];
-  singleOpen?: boolean; // controls if the accordion list should only open one accordion and close others
-}
-const Accordion: Component<AccordionProps> = (props) => {
-  const [opend, setOpend] = createSignal([]);
-  const detailedEls: HTMLDetailsElement[] = [];
-  createEffect(() => {
-    function onSummaryClick(e: MouseEvent) {
-      
-      detailedEls.forEach((details) => {
-        if (props.singleOpen && details.open && e.target != details) {
-          details.open = false;
-        }
-      });
-    }
 
-    detailedEls.forEach((v) => {
-      v.querySelector("summary").addEventListener("click", onSummaryClick);
+function Accordion<T>(props: AccordionProps<T>) {
+  const [selected, setSelected] = createSignal<JSX.Element>("");
+
+  const onItemClick = (item: AccordionProps<T>) => {
+    setSelected((old) => {
+      if (old == item.name) {
+        return "";
+      }
+      return item.name;
     });
+  };
 
-    onCleanup(() => {
-      detailedEls.forEach((v) => {
-        v.querySelector("summary").removeEventListener("click", onSummaryClick);
-      });
-    });
-  });
-
-  return (
-    <div>
+  const items = (
+    <div class="w-full">
       <For
-        each={props.data ?? []}
-        fallback={<div> loading ...</div>}
-        children={(item, index) => {
+        each={props.items}
+        children={(v) => {
           return (
-            <details ref={detailedEls[index()]} class="text-white text-sm">
-              <summary
-                onClick={() => {
-                  if (!detailedEls[index()]?.open) {
-                    item.onOpen && item.onOpen();
-                  }
-                }}
-              >
-                {item.title}
-              </summary>
-              <div>{item.content}</div>
-            </details>
+            <Accordion
+              name={v.name}
+              selected={v.name == selected()}
+              onClick={
+                v.onClick
+                  ? () => v.onClick(v, () => onItemClick(v))
+                  : onItemClick
+              }
+              items={v.items}
+            />
           );
         }}
       />
     </div>
   );
-};
+
+  createEffect(() => {
+    if (!props.selected) {
+      setSelected("");
+    }
+  }, [props.selected]);
+
+  return (
+    <ul>
+      <li class="w-full flex flex-col justify-start items-start overflow-hidden">
+        <button
+          class="w-full bg-gray-800 flex justify-center items-start p-xs1"
+          onClick={() => {
+            props.onClick && props.onClick(props);
+          }}
+        >
+          <div
+            class={`overflow-hidden text-sm ml-xs0 ${
+              props.selected ? "text-gray-200" : "text-gray-300"
+            } ${props.disabled ? "text-gray-400" : ""} `}
+          >
+            {props.name}
+          </div>
+          <div class="w-[24px] h-[24px] ml-[4.3rem]"></div>
+        </button>
+        <ul
+          class={`flex justify-start flex-col items-start overflow-hidden w-full ${
+            props.selected ? "h-[100%]" : "h-[0]"
+          }`}
+        >
+          {items}
+        </ul>
+      </li>
+    </ul>
+  );
+}
+
 export default Accordion;

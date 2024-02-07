@@ -1,4 +1,10 @@
-import { Component, JSX, createEffect, createSignal } from "solid-js";
+import {
+  Component,
+  JSX,
+  createEffect,
+  createSignal,
+  onCleanup,
+} from "solid-js";
 import { useRoutes } from "@solidjs/router";
 
 import { routes } from "../routes";
@@ -6,6 +12,12 @@ import Navbar from "../layouts/Navbar";
 import AppDrawer from "../layouts/AppDrawer";
 import useNotification from "../hooks/useNotification";
 import { CreateWebWorker } from "../Store/Thunk/WebWorkerThunk";
+import Accordion from "../components/Accordion";
+import useAccordion from "../components/Accordion/useAccordion";
+import SvgComponent, { SvgName } from "../components/Icons/Bars";
+import Snackbar from "../components/SnackBar/Snackbar";
+import useSnackbar from "../components/SnackBar/useSnackbar";
+import { durationMilliSeconds } from "../utils/time";
 
 const App: Component = () => {
   const [open, setOpen] = createSignal(false);
@@ -18,7 +30,10 @@ const App: Component = () => {
     if (data.command == "finished") {
       makeNotification(
         "hi",
-        { body: "this notification boyd", icon: "" },
+        {
+          body: "this notification boyd",
+          icon: "",
+        },
         (notification) => {
           document.title = "hii from notification";
           notification.close();
@@ -31,7 +46,7 @@ const App: Component = () => {
     worker.postMessageToWorker({
       command: "start",
       type: "timeout",
-      time: 5000,
+      time: durationMilliSeconds({ seconds: 5 }),
     });
 
     // const worker = new Worker("worker.js", { type: "classic" });

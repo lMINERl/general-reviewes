@@ -23,13 +23,13 @@ const config: Config = {
         // util-colors
         progress: "#3580DE",
         modalShade: "#050505",
-        neutral: "#efc83d",
+        success: "#efc83d",
         processing: "#29D459",
         danger: "#D96464",
         warning: "#38a169",
       },
       fontFamily: {
-        sans: ["Roboto", "Helvetica", "Arial", "sans-serif"],
+        sans: ["Fira Code", "Roboto", "Helvetica", "Arial", "sans-serif"],
       },
       spacing: {
         px: "1px",
@@ -70,7 +70,7 @@ const config: Config = {
         customGradient:
           "linear-gradient(270deg, rgba(56, 178, 172, 0.3) 0%, rgba(56, 178, 172, 0) 100%)",
       },
-      
+
       width: {
         "1/10": "10%",
       },

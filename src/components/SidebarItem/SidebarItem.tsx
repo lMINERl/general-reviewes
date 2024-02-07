@@ -23,7 +23,7 @@ const SidebarItem = (props: SidebarItemProps) => {
   };
 
   const items = (
-    <div class="">
+    <>
       <For
         each={props.items}
         children={(v) => {
@@ -38,7 +38,7 @@ const SidebarItem = (props: SidebarItemProps) => {
           );
         }}
       />
-    </div>
+    </>
   );
 
   createEffect(() => {

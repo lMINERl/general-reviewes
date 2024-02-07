@@ -4,7 +4,7 @@ import "./index.css";
 import { render } from "solid-js/web";
 import { Router } from "@solidjs/router";
 import App from "./App/app";
-import "solid-devtools";
+// import "solid-devtools";
 
 const root = document.getElementById("root");
 // Object.assign(document.createElement("div"), { id: "root" });

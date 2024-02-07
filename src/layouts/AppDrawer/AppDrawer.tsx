@@ -50,21 +50,16 @@ const AppDrawer = (props: ParentProps<AppDrawerProps>) => {
   const items = (
     <For
       each={list}
-      children={(v, i) => {
+      children={(v) => {
         return (
-          <div>
-            <SidebarItem
-              name={v.name}
-              path={v.path}
-              icon={v.icon as unknown as JSX.Element}
-              selected={v.name == openedItem()}
-              onClick={onItemClick}
-              items={v.items as SidebarItemProps[]}
-            />
-            <Show when={i() != list.length - 1}>
-              <div class="border-[1px] border-gray-700 mt-[5px] mb-[5px]" />
-            </Show>
-          </div>
+          <SidebarItem
+            name={v.name}
+            path={v.path}
+            icon={v.icon as unknown as JSX.Element}
+            selected={v.name == openedItem()}
+            onClick={onItemClick}
+            items={v.items as SidebarItemProps[]}
+          />
         );
       }}
     />
@@ -75,11 +70,15 @@ const AppDrawer = (props: ParentProps<AppDrawerProps>) => {
       <div
         class={`${
           !props.open ? "w-0" : "w-full"
-        } relative md:max-w-[20.8rem] bg-gray-700 overflow-hidden min-h-[100vh] transition-all ease-linear delay-150 rounded-r-lg`}
+        } relative md:max-w-[20.8rem] bg-gray-700 overflow-hidden min-h-[100vh] transition-all ease-linear rounded-r-lg`}
       >
         <ul class="w-full pt-md0 px-sm0 pb-xs1">{items}</ul>
       </div>
-      <div class={`${!props.open? "w-full" : "w-0"} md:w-full transition-all ease-linear delay-150 overflow-hidden bg-gray-1000`}>{props.children}</div>
+      <div
+        class={`${!props.open ? "w-full" : "w-0"} md:w-full transition-all ease-linear overflow-hidden bg-gray-1000`}
+      >
+        {props.children}
+      </div>
     </div>
   );
 };
