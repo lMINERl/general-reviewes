@@ -1,15 +1,5 @@
-import {
-  Component,
-  JSX,
-  Show,
-  children,
-  createEffect,
-  createMemo,
-  createSignal,
-  mergeProps,
-  splitProps,
-} from "solid-js";
-import { Dynamic, createComponent } from "solid-js/web";
+import { Component, JSX, Show } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import useSmoothCaret from "../../hooks/useSmoothCaret";
 
 interface InputPropTypes {
@@ -17,9 +7,9 @@ interface InputPropTypes {
     | JSX.InputHTMLAttributes<HTMLInputElement>
     | Component<JSX.InputHTMLAttributes<HTMLInputElement>>;
   label?: JSX.LabelHTMLAttributes<HTMLLabelElement> & {
-    value: JSX.Element | Component;
+    value: JSX.Element;
   };
-  error?: JSX.Element | Component;
+  error?: JSX.Element;
 }
 
 const Input: Component<InputPropTypes> = (props) => {
@@ -30,19 +20,17 @@ const Input: Component<InputPropTypes> = (props) => {
       <div
         class={`flex flex-col w-full ${props.error ? "mb-3" : ""} items-start`}
       >
-        <Show when={props.label?.value} fallback={<></>}>
+        <Show when={props.label?.value}>
           <label
             class="text-gray-200 mb-2 text-base"
             for={inputId}
             {...props.label}
           >
-            <Show when={typeof props.label == "string"}>
-              {props.label.value}
-            </Show>
+            {props.label.value}
           </label>
         </Show>
-
-        <div data-sc="" class="sc-container w-full">
+        
+        <div data-sc="" class="sc-container w-full flex">
           <Dynamic
             component={typeof props.input == "function" ? props.input : "input"}
             {...(typeof props.input == "object" ? props.input : {})}
@@ -56,8 +44,10 @@ const Input: Component<InputPropTypes> = (props) => {
             style={{ width: `2px` }}
           ></div>
         </div>
+        <Show when={Boolean(props.error)}>
+          <div class="text-sm text-danger">{props.error}</div>
+        </Show>
       </div>
-      <div class="text-danger">{props.error as any}</div>
     </>
   );
 };

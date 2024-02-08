@@ -17,7 +17,7 @@ import { waitForElem } from "../helpers/element";
 const useSmoothCaret = () => {
   const inputId = createUniqueId();
   const caretId = createUniqueId();
-  const [cleanupFn, setCleanupFn] = createSignal<() => void>();
+  const [cleanupFn, setCleanupFn] = createSignal<() => void>(() => {});
   const [textWidth, setTextWidth] = createSignal<number>(2);
 
   createEffect(async () => {
@@ -26,9 +26,13 @@ const useSmoothCaret = () => {
 
     const smoothcaret = new SmoothCaret(caretEl, inputEl, 0);
     const { releaseEvnt } = smoothcaret.init();
+    // you cant use cleanup function out of context (async)
     setCleanupFn(() => releaseEvnt);
   });
-  onCleanup(() => cleanupFn()());
+
+  onCleanup(() => {
+    cleanupFn()();
+  });
   return { inputId, caretId, textWidth };
 };
 export default useSmoothCaret;

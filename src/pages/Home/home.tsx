@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup } from "solid-js";
 import useSnackbar from "../../components/SnackBar/useSnackbar";
 import Snackbar from "../../components/SnackBar/Snackbar";
 import Form from "../../layouts/Form";
@@ -50,54 +50,55 @@ export default function Home() {
   });
 
   const [formTask, setFormTask] = createStore<{ title: string }>({ title: "" });
-  const { formState, formErrors, onInput } = useForm({
-    initial: { title: "" },
-    validation: {
-      title: (value) => {
-        return value === "123" ? "error" : false;
-      },
-    },
-  });
 
   return (
     <section class="bg-gray-100 text-gray-700 p-8">
       <h1 class="text-2xl font-bold">Tasks</h1>
-      <Input
-        label={{ value: "label" }}
-        input={{
-          type: "text",
-          title: "Input Title",
-          value: "adfa",
-          onInput: (e: any) => onInput("title", e.target.value),
+      <Form
+        initial={{ title: "", check: true }}
+        validation={{
+          title: (value) => {
+            return value == "123" ? <p class="text-success"> YES </p> : false;
+          },
         }}
-        error={formErrors.title}
-      />
-
-      <Form>
-        <div class="flex flex-row items-center justify-between">
-          <div class="mx-xs1 flex items-center w-full">
-            <Input
-              label={{ value: "some label" }}
-              input={{
-                type: "password",
-                title: "Input Title",
-                value: formState.title,
-                onInput: (e: any) => onInput("title", e.target.value),
-              }}
-              error={formErrors.title}
-            />
-          </div>
-          <div>{formErrors.title}</div>
-          <button
-            type="submit"
-            class="border border-gray-600 rounded-lg py-xs0 px-xs1 bg-gray-600 text-gray-50 text-sm hover:border-gray-700 hover:bg-gray-700"
-            onClick={() => {
-              console.log(formState, formErrors);
-            }}
-          >
-            Add
-          </button>
-        </div>
+      >
+        {(props) => {
+          return (
+            <>
+              <input
+                type="checkbox"
+                checked={props.formState.check}
+                onChange={(e) => props.onInput("check", e.target.checked)}
+              />
+              <div class="flex flex-row items-center justify-between">
+                <div class="mx-xs1 flex items-center w-full">
+                  <Show when={props.formState.check}>
+                    <Input
+                      label={{ value: props.formState.title }}
+                      input={{
+                        type: "text",
+                        title: "Input Title",
+                        value: props.formState.title,
+                        onInput: (e: any) =>
+                          props.onInput("title", e.target.value),
+                      }}
+                      error={props.formErrors.title}
+                    />
+                  </Show>
+                </div>
+                <button
+                  type="submit"
+                  class="border border-gray-600 rounded-lg py-xs0 px-xs1 bg-gray-600 text-gray-50 text-sm hover:border-gray-700 hover:bg-gray-700"
+                  onClick={() => {
+                    console.log(props.formState, props.formErrors);
+                  }}
+                >
+                  Add
+                </button>
+              </div>
+            </>
+          );
+        }}
       </Form>
       <div class="flex items-center space-x-2">
         <button
