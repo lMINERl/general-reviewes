@@ -25,7 +25,7 @@ const styleString =
   ".sc-container{display:grid;grid-template-columns:repeat(1,1fr);}.smoothCaretInput{grid-column:1/3;caret-color:transparent}.caret{grid-column:2/-2;align-self:center;transition:.2s;opacity: 0;}.caret,.smoothCaretInput{grid-row:1/2}";
 const style = document.createElement("style");
 const canvElem = document.createElement("canvas");
-export const passwordChar = navigator.userAgent.match(/firefox|fxios/i)
+export const passwordChar = navigator.userAgent.match(/firefox|fxios|edg/i)
   ? "\u25CF"
   : "\u2022";
 
@@ -86,30 +86,68 @@ export class SmoothCaret {
 
     const onBlur = () => {
       this.caretElem.style.opacity = "";
-      this.caretElem.style.transform = "";
     };
 
     const onInput = (e: any) => {
+      const selectionIndex = (document.activeElement as any).selectionStart;
+      const { value } = e.target;
+      const { length } = value ?? "";
+
       this.update(
         e.target.type === "password"
-          ? Array(e.target.value.length + 1).join(passwordChar)
-          : e.target.value,
+          ? Array(length + 1)
+              .join(passwordChar)
+              .slice(0, selectionIndex)
+          : value.slice(0, selectionIndex),
       );
-      if (e.target.value?.length == 0) {
+      if (length == 0) {
         // onBlur();
-
         this.caretElem.style.opacity = "1";
         this.caretElem.style.transform = "translateX('2px')";
       }
     };
 
+    const onFocus = (e) => {
+      this.caretElem.style.opacity = "1";
+      this.update(e.target.value);
+    };
+
+    const onKeyUp = (e) => {
+      if (e.keyCode == 37 || e.keyCode == 39) {
+        let { selectionStart, selectionEnd } = document.activeElement as any;
+        const { value } = e.target;
+        const { length } = value ?? "";
+        let currentSelection = selectionStart;
+        if (selectionStart != selectionEnd) {
+          if (e.keyCode == 37) {
+            currentSelection = selectionStart;
+          }
+          if (e.keyCode == 39) {
+            currentSelection = selectionEnd;
+          }
+        }
+        this.update(
+          e.target.type === "password"
+            ? Array(length + 1)
+                .join(passwordChar)
+                .slice(0, currentSelection)
+            : value.slice(0, currentSelection),
+        );
+      }
+    };
+
     this.inputElem.addEventListener("input", onInput);
     this.inputElem.addEventListener("blur", onBlur);
-
+    this.inputElem.addEventListener("focus", onFocus);
+    this.inputElem.addEventListener("keyup", onKeyUp);
+    this.inputElem.addEventListener("click", onKeyUp);
     return {
       releaseEvnt: () => {
         this.inputElem.removeEventListener("input", onInput);
         this.inputElem.removeEventListener("blur", onBlur);
+        this.inputElem.removeEventListener("focus", onFocus);
+        this.inputElem.removeEventListener("keyup", onKeyUp);
+        this.inputElem.removeEventListener("click", onKeyUp);
       },
       textWidth: getTextWidth(".", this.font),
     };

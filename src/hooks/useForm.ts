@@ -11,19 +11,23 @@ export interface FormPropsType<T extends object> {
 
 export interface FormOutput<T extends object> {
   onInput: (field: keyof T, value: any) => void;
-  formState: Accessor<T>;
-  formErrors: Accessor<{ [k in keyof T]: JSX.Element }>;
-  setFormState: Setter<T>;
-  setFormErrors: Setter<{ [k in keyof T]: JSX.Element }>;
+  formState: ReturnType<Accessor<T>>;
+  formErrors: ReturnType<Accessor<{ [k in keyof T]: JSX.Element }>>;
+  setFormState: SetStoreFunction<T>;
+  setFormErrors: SetStoreFunction<{ [k in keyof T]: JSX.Element }>;
 }
 
 function useForm<T extends object>(
   props: Prettify<FormPropsType<T>>,
 ): Prettify<FormOutput<T>> {
-  const [formState, setFormState] = createSignal<T>(props.initial as T);
-  const [formErrors, setFormErrors] = createSignal<{
+  const [formState, setFormState] = createStore<T>(props.initial as T);
+  const [formErrors, setFormErrors] = createStore<{
     [k in keyof T]: JSX.Element;
-  }>({} as any);
+  }>(
+    Object.fromEntries(
+      Object.entries(props.initial).map((v) => [v[0], false]),
+    ) as any,
+  );
 
   const onInput = (field: keyof T, value: any) => {
     batch(() => {
