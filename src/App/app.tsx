@@ -19,7 +19,7 @@ import Snackbar from "../components/SnackBar/Snackbar";
 import useSnackbar from "../components/SnackBar/useSnackbar";
 import { durationMilliSeconds } from "../utils/time";
 
-const App: Component = () => {
+export const App: Component = () => {
   const [open, setOpen] = createSignal(false);
   // const location = useLocation();
   const Route = useRoutes(routes);
@@ -77,4 +77,3 @@ const App: Component = () => {
   );
 };
 
-export default App;
