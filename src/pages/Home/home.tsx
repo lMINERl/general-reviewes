@@ -1,10 +1,11 @@
-import { Show, createEffect, createSignal, onCleanup } from "solid-js";
+import { Show, Switch, createEffect, createSignal, onCleanup } from "solid-js";
 import useSnackbar from "../../components/SnackBar/useSnackbar";
 import Snackbar from "../../components/SnackBar/Snackbar";
 import Form from "../../layouts/Form";
 import { createStore } from "solid-js/store";
 import Input from "../../components/Input";
 import useForm from "../../hooks/useForm";
+import Checkbox from "../../components/Checkbox";
 
 export default function Home() {
   const [count, setCount] = createSignal(0);
@@ -65,10 +66,12 @@ export default function Home() {
         {(props) => {
           return (
             <>
-              <input
-                type="checkbox"
-                checked={props.formState.check}
-                onChange={(e) => props.onInput("check", e.target.checked)}
+              <Checkbox
+                label="switch"
+                input={{
+                  checked: props.formState.check,
+                  onClick: (e) => props.onInput("check", e.target.checked),
+                }}
               />
               <div class="flex flex-row items-center justify-between">
                 <div class="mx-xs1 flex items-center w-full">

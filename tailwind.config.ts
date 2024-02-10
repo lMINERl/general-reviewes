@@ -21,6 +21,7 @@ const config: Config = {
         },
 
         // util-colors
+        accent: "#19ff70",
         progress: "#3580DE",
         modalShade: "#050505",
         success: "#efc83d",
@@ -38,6 +39,7 @@ const config: Config = {
         xs2: "1.2rem",
         xs3: "1.4rem",
         sm0: "1.6rem",
+        sm1: "1.8rem",
         md0: "2rem",
         md1: "2.4rem",
         md2: "2.6rem",

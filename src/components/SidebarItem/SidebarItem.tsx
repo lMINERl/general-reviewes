@@ -1,4 +1,4 @@
-import { Accessor, For, JSX, createEffect, createSignal } from "solid-js";
+import { Accessor, For, JSX, Show, createEffect, createSignal } from "solid-js";
 
 export interface SidebarItemProps {
   selected?: boolean;
@@ -50,12 +50,12 @@ const SidebarItem = (props: SidebarItemProps) => {
   return (
     <li class="w-full flex flex-col justify-start items-start overflow-hidden">
       <button
-        class="w-full bg-gray-800 flex justify-center items-start p-xs1 rounded-lg"
+        class="w-full bg-gray-800 flex justify-start items-center p-xs1 rounded-lg"
         onClick={() => {
           props.onClick && props.onClick(props);
         }}
       >
-        <div class="w-[24px] h-[24px]">{props.icon}</div>
+        <div class="ml-sm1 w-md1 h-md1">{props.icon}</div>
         <div
           class={`overflow-hidden text-sm ml-xs0 ${
             props.selected ? "text-gray-200" : "text-gray-300"
@@ -63,7 +63,17 @@ const SidebarItem = (props: SidebarItemProps) => {
         >
           {props.name}
         </div>
-        <div class="w-[24] h-[24] ml-[4.3rem]"></div>
+        <Show when={props.items?.length}>
+          <div class="w-md1 h-md1 ml-auto">
+            <svg
+              class={`w-full fill-accent transition-[transform] transform ${props.selected ? "rotate-180" : ""}`}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+            </svg>
+          </div>
+        </Show>
       </button>
       <ul
         class={`flex justify-start flex-col items-start overflow-hidden w-full ${
