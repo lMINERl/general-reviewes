@@ -29,13 +29,13 @@ export class CreateWebWorker {
 
   constructor(scriptURL?: string, options?: WorkerOptions) {
     this.worker = new Worker(
-      scriptURL ?? "worker.js",
+      scriptURL ?? "./worker.js",
       options ?? { type: "classic" },
     );
 
     this.postMessageToWorker = (message: WebWorkerPostMessage) => {
       this.worker.postMessage(message);
-      return this;
+      return this as unknown as WorkerObject;
     };
 
     this.onMessageFromWorker = (
@@ -47,7 +47,7 @@ export class CreateWebWorker {
           onMessage(event.data);
         },
       );
-      return this;
+      return this as unknown as WorkerObject;
     };
     this.terminate = () => {
       this.worker.terminate();

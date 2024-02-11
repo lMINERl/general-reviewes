@@ -1,3 +1,4 @@
+// if this doesnt work in production please add this in dist file
 let timeoutId;
 
 self.addEventListener("message", function (event) {

@@ -5,3 +5,22 @@
 html {
   font-size: 62.5%;
 }
+
+.sc-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+.smoothCaretInput {
+  grid-column: 1/3;
+  caret-color: transparent;
+}
+.caret {
+  grid-column: 2/-2;
+  align-self: center;
+  transition: 0.2s;
+  opacity: 0;
+}
+.caret,
+.smoothCaretInput {
+  grid-row: 1/2;
+}

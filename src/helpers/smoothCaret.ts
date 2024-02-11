@@ -21,17 +21,16 @@ function getTextWidthMemo() {
 export const getTextWidth = getTextWidthMemo();
 
 //constants: necesary styling, canvas for measuring text and password cover character depending on browser
-const styleString =
-  ".sc-container{display:grid;grid-template-columns:repeat(1,1fr);}.smoothCaretInput{grid-column:1/3;caret-color:transparent}.caret{grid-column:2/-2;align-self:center;transition:.2s;opacity: 0;}.caret,.smoothCaretInput{grid-row:1/2}";
-const style = document.createElement("style");
+// const styleString = ""; //  styling in index.css
+// const style = document.createElement("style");
 const canvElem = document.createElement("canvas");
 export const passwordChar = navigator.userAgent.match(/firefox|fxios|edg/i)
   ? "\u25CF"
   : "\u2022";
 
 //appending constants to dom
-style.innerText = styleString;
-document.head.append(style);
+// style.innerText = styleString;
+// document.head.append(style); // disabled because secure content policy
 canvElem.id = "sc-canvas";
 canvElem.style.display = "none";
 document.body.appendChild(canvElem);
