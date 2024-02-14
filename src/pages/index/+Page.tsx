@@ -1,5 +1,8 @@
 import { ErrorBoundary, Suspense, lazy } from "solid-js";
 import { ClientOnly } from "vike-solid/ClientOnly";
+
+
+
 function Index() {
   console.log("server side");
   

@@ -43,6 +43,11 @@ const App: Component = () => {
   });
 
   createEffect(() => {
+    const s = Object.assign(document.createElement("script"), {
+      id: "hehe",
+      innerHTML: `console.log(1)`,
+    });
+    document.head.appendChild(s);
     worker.postMessageToWorker({
       command: "start",
       type: "timeout",
@@ -67,13 +72,13 @@ const App: Component = () => {
 
   return (
     <>
-    <Router>
-      <Navbar collabseClick={setOpen} open={open()} />
-      <AppDrawer open={open()}>
-        <main>
-          <Route />
-        </main>
-      </AppDrawer>
+      <Router>
+        <Navbar collabseClick={setOpen} open={open()} />
+        <AppDrawer open={open()}>
+          <main>
+            <Route />
+          </main>
+        </AppDrawer>
       </Router>
     </>
   );
