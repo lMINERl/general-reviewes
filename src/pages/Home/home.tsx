@@ -6,7 +6,7 @@ import { createStore } from "solid-js/store";
 import Input from "../../components/Input";
 import useForm from "../../hooks/useForm";
 import Checkbox from "../../components/Checkbox";
-
+import "../../index.css";
 export default function Home() {
   const [count, setCount] = createSignal(0);
 

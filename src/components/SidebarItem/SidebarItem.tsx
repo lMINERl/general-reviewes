@@ -1,4 +1,6 @@
 import { Accessor, For, JSX, Show, createEffect, createSignal } from "solid-js";
+import { Prettify } from "../../types/types";
+import { useNavigate } from "@solidjs/router";
 
 export interface SidebarItemProps {
   selected?: boolean;
@@ -10,10 +12,14 @@ export interface SidebarItemProps {
   items?: SidebarItemProps[];
 }
 
-const SidebarItem = (props: SidebarItemProps) => {
+const SidebarItem = (props: Prettify<SidebarItemProps>) => {
   const [selected, setSelected] = createSignal("");
-
-  const onItemClick = (item: { name: string; path: string }) => {
+  const navigate = useNavigate();
+  const onItemClick = (item: SidebarItemProps) => {
+    if (!item.items?.length) {
+    console.log('route to about')
+      navigate(item.path);
+    }
     setSelected((old) => {
       if (old == item.name) {
         return "";

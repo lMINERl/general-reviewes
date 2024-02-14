@@ -2,6 +2,9 @@ import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
 import csp from "vite-plugin-csp";
 
+import VikeSolid from "vike-solid/vite";
+import vike from "vike/plugin";
+
 import devtools from "solid-devtools/vite";
 
 export default defineConfig({
@@ -29,7 +32,9 @@ export default defineConfig({
     devtools({
       autoname: true,
     }),
-    solidPlugin(),
+    vike(),
+    VikeSolid(),
+    // solidPlugin(),
   ],
   server: {
     port: 3000,

@@ -22,7 +22,7 @@ export const getTextWidth = getTextWidthMemo();
 
 //constants: necesary styling, canvas for measuring text and password cover character depending on browser
 // const styleString = ""; //  styling in index.css
-// const style = document.createElement("style");
+const style = document.createElement("style");
 const canvElem = document.createElement("canvas");
 export const passwordChar = navigator.userAgent.match(/firefox|fxios|edg/i)
   ? "\u25CF"

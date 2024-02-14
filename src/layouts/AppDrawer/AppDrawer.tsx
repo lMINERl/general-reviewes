@@ -1,6 +1,7 @@
 import { For, JSX, ParentProps, Show, createSignal } from "solid-js";
 import SidebarItem from "../../components/SidebarItem";
 import { SidebarItemProps } from "../../components/SidebarItem/SidebarItem";
+import { useNavigate } from "@solidjs/router";
 
 const list = [
   {
@@ -17,7 +18,7 @@ const list = [
         />
       </svg>
     ),
-    path: "",
+    path: "/about",
   },
   {
     name: "Planning",
@@ -80,8 +81,12 @@ interface AppDrawerProps {
 
 const AppDrawer = (props: ParentProps<AppDrawerProps>) => {
   const [openedItem, setOpenedItem] = createSignal<string>("");
+  const navigator = useNavigate();
 
-  const onItemClick = (item: { name: string; path: string }) => {
+  const onItemClick = (item: SidebarItemProps) => {
+    if (!item.items?.length) {
+      navigator(item.path);
+    }
     setOpenedItem((old) => {
       if (old == item.name) {
         return "";
