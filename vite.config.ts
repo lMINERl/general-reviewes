@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
 
   let currentNonce = "";
 
-  const m = () => { 
+  const m = () => {
     const salt = crypto.lib.WordArray.random(128 / 8).toString();
     currentNonce = salt;
     return currentNonce;
@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
 
   const regexMeta = /<meta csp(.*?)/gi;
   const replacementMeta = (scriptNonce: string, styleNonce: string) =>
-    `<meta content="default-src 'self'; base-uri 'self'; script-src 'self' 'nonce-${scriptNonce}' 'unsafe-inline'; style-src 'self' 'nonce-${styleNonce}' 'unsafe-inline'" `;
+    `<meta content="default-src 'self'; base-uri 'self'; script-src 'self' 'nonce-${scriptNonce}' 'unsafe-inline'; style-src 'self' 'nonce-${styleNonce}' 'unsafe-inline'; font-src https: " `;
 
   // TODO: make one normal regex to handle all three
   const regexScript = /<script(.*?)/gi;
@@ -31,8 +31,8 @@ export default defineConfig(({ mode }) => {
   const regexStyle = /<style(.*?)/gi;
   const replacementStyle = (nonce: string) => `<style nonce="${nonce}"$1`;
 
-  const regexLink = /<link(.*?)/gi;
-  const replacementLink = (nonce: string) => `<link nonce="${nonce}"$1`;
+  // const regexLink = /<link(.*?)/gi;
+  // const replacementLink = (nonce: string) => `<link nonce="${nonce}"$1`;
 
   const regexCssLink = /<link css(.*?)/gi;
   const replacementCssLink = (nonce: string) => `<link nonce="${nonce}"$1`;
@@ -76,12 +76,14 @@ export default defineConfig(({ mode }) => {
         enforce: "post",
         transformIndexHtml(html) {
           const cn = m();
-          return html
-            .replace(regexScript, replacementScript(cn))
-            .replace(regexStyle, replacementStyle(StyleNonce))
-            .replace(regexCssLink, replacementCssLink(StyleNonce))
-            .replace(regexLink, replacementLink(cn))
-            .replace(regexMeta, replacementMeta(cn, StyleNonce));
+          return (
+            html
+              .replace(regexScript, replacementScript(cn))
+              .replace(regexStyle, replacementStyle(StyleNonce))
+              // .replace(regexLink, replacementLink(cn))
+              .replace(regexCssLink, replacementCssLink(StyleNonce))
+              .replace(regexMeta, replacementMeta(cn, StyleNonce))
+          );
         },
       },
 
